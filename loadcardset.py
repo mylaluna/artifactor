@@ -1,8 +1,13 @@
 import urllib.request
 import json
 import os
-import requests
+import sys
 from datetime import datetime
+
+try:
+  import requests
+except ImportError:
+  sys.exit("""You need module requests! please run pip3 install requests.""")
 
 cardsetUrlJSONTemplate = {"cdn_root":"","url":"","expire_time":0}
 cardsetFetchUrlTemplate = "https://playartifact.com/cardset/<setid>/"
@@ -52,7 +57,19 @@ for setid in setids:
 
     # large_image
     for language, image_url in card['large_image'].items():
-      with open('cardset_image/' + setid + '/' + language + '/large_image/' + card['card_name'][language] + '.png', 'wb') as imagefile:
+      if language == 'default':
+        language_dir = 'english'
+        card_name = card['card_name']['english']
+      else:
+        language_dir = language
+        card_name = card['card_name'][language]
+      
+      image_path = os.path.join('cardset_image', setid, language_dir, 'large_image', card_name, '.png')
+      image_dir = os.path.dirname(image_path)
+      if not os.path.exists(image_dir):
+        os.makedirs(image_dir)
+        
+      with open(image_path, 'wb') as imagefile:
         imagefile.write(requests.get(image_url).content)
     # mini_image
 
