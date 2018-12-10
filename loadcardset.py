@@ -54,6 +54,14 @@ for setid in setids:
     # for language, name in card['card_name'].items():
     
     # ingame_image
+    if card['ingame_image']:
+      ingame_image_url = card['ingame_image']['default']
+      ingame_image_path = os.path.join('cardset_image', setid, 'english', 'ingame_image', card['card_name']['english'] + '.png')
+      ingame_image_dir = os.path.dirname(ingame_image_path)
+      if not os.path.exists(ingame_image_dir):
+        os.makedirs(ingame_image_dir)
+      with open(ingame_image_path, 'wb') as imagefile:
+        imagefile.write(requests.get(ingame_image_url).content)
 
     # large_image
     for language, image_url in card['large_image'].items():
@@ -64,7 +72,7 @@ for setid in setids:
         language_dir = language
         card_name = card['card_name'][language]
       
-      image_path = os.path.join('cardset_image', setid, language_dir, 'large_image', card_name, '.png')
+      image_path = os.path.join('cardset_image', setid, language_dir, 'large_image', card_name + '.png')
       image_dir = os.path.dirname(image_path)
       if not os.path.exists(image_dir):
         os.makedirs(image_dir)
@@ -72,6 +80,14 @@ for setid in setids:
       with open(image_path, 'wb') as imagefile:
         imagefile.write(requests.get(image_url).content)
     # mini_image
+    if card['mini_image']:
+      mini_image_url = card['mini_image']['default']
+      mini_image_path = os.path.join('cardset_image', setid, 'english', 'mini_image', card['card_name']['english'] + '.png')
+      mini_image_dir = os.path.dirname(mini_image_path)
+      if not os.path.exists(mini_image_dir):
+        os.makedirs(mini_image_dir)
+      with open(mini_image_path, 'wb') as imagefile:
+        imagefile.write(requests.get(mini_image_url).content)
 
 
   
