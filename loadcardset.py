@@ -28,8 +28,8 @@ for setid in setids:
     with urllib.request.urlopen(cardsetFetchUrlTemplate.replace("<setid>", setid)) as res: 
       cardsetUrlJSON = json.loads(res.read())
 
-    with open('cardsetUrl-'+ setid + '.json', 'w') as outfile:
-      json.dump(cardsetUrlJSON, outfile, sort_keys=True, indent=2)
+    with open('cardsetUrl-'+ setid + '.json', 'w', encoding='utf8') as outfile:
+      json.dump(cardsetUrlJSON, outfile, sort_keys=True, indent=2, ensure_ascii=False)
 
   cardsetUrl = cardsetUrlTemplate.replace("somehost", cardsetUrlJSON["cdn_root"]).replace("/someurl", cardsetUrlJSON["url"])
 
@@ -40,16 +40,10 @@ for setid in setids:
     cardsetJSON = json.loads(res.read())
   
   # save cardsetJSON to file
-  with open('cardset-'+ setid+ '.json', 'w+') as outfile:
-    json.dump(cardsetJSON, outfile, sort_keys=True, indent=2)
+  with open('cardset-'+ setid+ '.json', 'w+', encoding='utf8') as outfile:
+    json.dump(cardsetJSON, outfile, sort_keys=True, indent=2, ensure_ascii=False)
 
   # pull card images from cardsetJSON 
-  # if not os.path.exists('cardset_image'):
-  #   os.makedirs('cardset_image/' + setid + '/default/large_image')
-  #   os.makedirs('cardset_image/' + setid + '/default/mini_image')
-  #   os.makedirs('cardset_image/' + setid + '/schinese/large_image')
-  #   os.makedirs('cardset_image/' + setid + '/schinese/mini_image')
-  
   for card in cardsetJSON['card_set']['card_list']:
     # for language, name in card['card_name'].items():
     
